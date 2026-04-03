@@ -1,14 +1,15 @@
 package valus.Sudoku;
 
 public class Sudoku {
-    
-    // [row][column] sequential board
+
+    // sequential board [row][column]
     int[][] board = new int[9][9];
 
     // linear sequential board [0-80]
     int[] sequential_board = new int[81];
 
-    int[][] block = new int[9][9];  //* [block0-8][entry 0-8] board
+    // block-based board [block0-8][entry 0-8]
+    int[][] block = new int[9][9];
 
     boolean isSaved = false;
 
@@ -50,7 +51,7 @@ public class Sudoku {
         blockify();
 
         // saved all boards
-        
+
         isSaved = true;
 
         System.out.println("\n");
@@ -69,7 +70,7 @@ public class Sudoku {
             System.out.println("\n---------------------------");
             System.out.println("No Sudoku table to print!");
             System.out.println("-----------------------");
-            return; 
+            return;
         }
 
         // Compatible Sudoku Table
@@ -78,15 +79,15 @@ public class Sudoku {
         for(int i = 0; i < 9; i++){
 
             // block separator
-            if(i%3==0){System.out.println("    ------------------------");} 
+            if(i%3==0){System.out.println("    ------------------------");}
 
             System.out.printf("%d - ",i+1);
 
-            
+
             for(int j = 0; j < 9; j++){
 
                // first character
-                if(j==0) System.out.print("["); 
+                if(j==0) System.out.print("[");
 
                // block separators
                 if(j==3 || j==6) System.out.print("| ");
@@ -135,17 +136,11 @@ public class Sudoku {
 
         for(int i = 0; i < 9; i++){ // extract each element in block
 
-            temp_block[i] = sequential_board[start-1]; // -1 to address the array indices (starting from 0)
-
-            //System.out.print(start-1+" "); // print block indices
-            //System.out.print(sequential_board[start-1]+" "); // print block entries
-
+            temp_block[i] = sequential_board[start-1]; // -1 to address the array indices
             if(start%3==0 && start!=0) start+=7;         // reached last element in row of block, jump to the next row
             else start++;                                // go to subsequent element
 
         }
-
-        //System.out.println(); //debug
 
         return temp_block;
     }
@@ -164,7 +159,7 @@ public class Sudoku {
 
         for(int i = 0; i < 9; i++){ // extract each element in block
 
-            temp_block[i] = sequential_board[start-1]; // -1 to address the array indices (starting from 0)
+            temp_block[i] = sequential_board[start-1]; // -1 to address the array indices
 
             // System.out.print(start-1+" "); // print block indices
             System.out.print(sequential_board[start-1]+" "); // print block entries
@@ -174,7 +169,7 @@ public class Sudoku {
 
         }
 
-        System.out.println(); //debug
+        System.out.println(); // space after each block
 
         return temp_block;
     }
