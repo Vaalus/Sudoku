@@ -8,7 +8,7 @@ public class Sudoku {
     // linear sequential board [0-80]
     int[] sequential_board = new int[81];
 
-    int[][] block_board = new int[9][9];  //* [block][entry 0-8] board
+    int[][] block = new int[9][9];  //* [block0-8][entry 0-8] board
 
     boolean isSaved = false;
 
@@ -46,9 +46,10 @@ public class Sudoku {
 
         }
 
+        // turn it into a block-based board
+        blockify();
 
-
-        // saved both boards
+        // saved all boards
         
         isSaved = true;
 
@@ -106,5 +107,76 @@ public class Sudoku {
 
     }
 
+    void blockify(){
+
+        // translates the linear board into Sudoku blocks
+        // block[0-8][entry0-8]
+        int start = 1; int counter = 1;
+
+        for(int i = 0; i < 9; i++){ // extract the 9 blocks. after each subsequent 3 blocks, jump vertically (+21)
+            block[i] = extractBlock(start);
+            if(counter%3==0) start+=21;
+            else start+=3;
+            counter++;
+        }
+
+    }
+
+    int[] extractBlock(int start){
+
+        // start = index of the first element in a block, min == 1, max == 61
+
+        // handle invalid index
+        if(start>61 || start<1) {
+            System.out.println("Invalid index."); return null;
+        }
+
+        int[] temp_block = new int[9];
+
+        for(int i = 0; i < 9; i++){ // extract each element in block
+
+            temp_block[i] = sequential_board[start-1]; // -1 to address the array indices (starting from 0)
+
+            //System.out.print(start-1+" "); // print block indices
+            //System.out.print(sequential_board[start-1]+" "); // print block entries
+
+            if(start%3==0 && start!=0) start+=7;         // reached last element in row of block, jump to the next row
+            else start++;                                // go to subsequent element
+
+        }
+
+        //System.out.println(); //debug
+
+        return temp_block;
+    }
+
+    int[] extractBlockVerbose(int start){
+
+        // prints blocks
+        // start = index of the first element in a block, min == 1, max == 61
+
+        // handle invalid index
+        if(start>61 || start<1) {
+            System.out.println("Invalid index."); return null;
+        }
+
+        int[] temp_block = new int[9];
+
+        for(int i = 0; i < 9; i++){ // extract each element in block
+
+            temp_block[i] = sequential_board[start-1]; // -1 to address the array indices (starting from 0)
+
+            // System.out.print(start-1+" "); // print block indices
+            System.out.print(sequential_board[start-1]+" "); // print block entries
+
+            if(start%3==0 && start!=0){ start+=7; System.out.println(); } // reached last element in row of block, jump to the next row
+            else { start++; } // go to subsequent element
+
+        }
+
+        System.out.println(); //debug
+
+        return temp_block;
+    }
 
 }
