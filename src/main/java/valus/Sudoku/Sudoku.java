@@ -55,7 +55,7 @@ public class Sudoku {
         isSaved = true;
 
         System.out.println("\n");
-        System.out.println("------------------------------------------------");
+        System.out.println("-----------------------------------------------");
         System.out.println("Your Sudoku table has been saved successfully!");
         System.out.println("--------------------------------------------");
         System.out.print("\n");
@@ -74,7 +74,7 @@ public class Sudoku {
         }
 
         // Compatible Sudoku Table
-        System.out.println("\n     A B C | D E F | G H I");
+        System.out.println("\n     1 2 3 | 4 5 6 | 7 8 9");
 
         for(int i = 0; i < 9; i++){
 
@@ -172,6 +172,11 @@ public class Sudoku {
         System.out.println(); // space after each block
 
         return temp_block;
+    }
+
+    void verifySolution(){
+        if(isSaved) SudokuSolver.verifySolution(this);
+        else System.out.println("Fill up the board first!");
     }
 
 }
