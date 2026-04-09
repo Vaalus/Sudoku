@@ -2,7 +2,6 @@ package valus.Sudoku;
 
 public class SudokuSolver {
 
-
     static boolean verifySolution(Sudoku sudoku){
 
         // 1. Verify that each entry is not repeated either on the same column / row.
@@ -60,6 +59,13 @@ public class SudokuSolver {
 
     // No duplicate elements
 
+    // [2], check each block
+
+    verifyBlock(sudoku);
+
+    // I realize its kinda redundant, removing this would make it more efficient 
+    // I'm doing it though to map all logical parts of this, for when I turn it into a game :)
+    // I'll probably change the code a lot then.
 
     // passed through tests
 
@@ -69,59 +75,31 @@ public class SudokuSolver {
         return true;
     }
 
+    static boolean verifyBlock(Sudoku sudoku){
+
+        int[][] blocks = sudoku.block; // make a copy
 
 
-        static boolean verifySolutionSilently(Sudoku sudoku){
+        for(int block = 0; block < 9; block++){
 
-        // Doesn't print the result
+            boolean[] filledNumbers = new boolean[9]; // numbers 1-9 (decremented afterwards so 0-8)
 
-        // 1. Verify that each entry is not repeated either on the same column / row.
-        // 2. Verify that each block contains the numbers 1-9 once.
+            for(int entry = 0; entry < 9; entry++){
 
-        int[][] board = sudoku.board; // make a copy
+                int currentNumber = blocks[block][entry] - 1; // -1 to address the index diff of the array.
+                
+                if(filledNumbers[currentNumber] == true) { // number already assigned in boolean array
+                    System.out.printf("The number (%d) is used twice in block [%d].\n",currentNumber+1,block);
+                    return false;
+                }
 
-    // [1]. check for duplicate elements
-        for(int row = 0; row < 9; row++){
-
-            for(int column = 0; column < 9; column++){
-
-                int entry = board[row][column]; // original entry, to be compared against board
-
-                // check other columns
-                for(int i = 0; i <9; i++){
-
-                    if(column==i) continue; // skip original entry
-
-                    int testEntry=board[row][i];
-
-                    if(testEntry==entry){ // duplicate element
-                        return false; 
-                    }
-
-
-                } // checked all columns
-
-                // check other rows
-                for(int j = 0; j <9; j++){
-                    
-                    if(row==j) continue; // skip original entry
-
-                    int testEntry=board[j][column];
-
-                    if(testEntry==entry){ // duplicate element
-                        return false; 
-                    }
-
-                } // checked all rows
+                else filledNumbers[currentNumber] = true; // assign number
 
             }
 
-        }
+        } // passed all blocks
 
-    // No duplicate elements
-
-        return true; // passed through tests.
+        return true; // passed test
     }
-
 
 }
